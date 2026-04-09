@@ -4,6 +4,7 @@
 
 Custom MIDI remote script for **Ableton Push 1**. Replaces default Push behavior with
 custom pad layouts, button mappings, encoder assignments, and custom modes.
+User orients his push upsidedown.
 
 ## Push 1 MIDI Specification
 

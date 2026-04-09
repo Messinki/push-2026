@@ -8,7 +8,7 @@ from _Framework.ButtonElement import ButtonElement, Color
 from ableton.v2.base.dependency import *
 from ableton.v2.control_surface.elements import encoder
 
-from pushbase.colors import Rgb, Pulse, Blink
+from pushbase.colors import RgbColor, Rgb
 from pushbase.touch_encoder_element import TouchEncoderElement
 from pushbase.elements import create_note_button
 from pushbase import consts
@@ -54,7 +54,11 @@ class PushEmpty(ControlSurface):
             #def disconnect(self):   #this function is automatically called by live when the program is closed
 		    #for pads in range(36, 99)
 
-
+            # Rgb.BLACK, Rgb.DARK_GREY, Rgb.GREY, Rgb.WHITE
+            # Rgb.RED, Rgb.AMBER, Rgb.YELLOW, Rgb.LIME
+            # Rgb.GREEN, Rgb.SPRING, Rgb.TURQUOISE, Rgb.CYAN
+            # Rgb.SKY, Rgb.OCEAN, Rgb.BLUE
+            # Rgb.ORCHID, Rgb.MAGENTA, Rgb.PINK
 
         
             padsBottomRight = [95,94,93,92,87,86,85,84,79,78,77,76,71,70,69,68]
@@ -62,34 +66,11 @@ class PushEmpty(ControlSurface):
     
             MirrorDrumNotes = [39,38,38,39,43,42,42,43,47,46,46,47,51,50,50,51]
 
-            BLACK = 0
-            DARK_GREY = 1
-            GREY = 2
-            WHITE = 3
-            RED = 5
-            AMBER = 9
-            YELLOW = 13
-            LIME = 17
-            GREEN = 21
-            SPRING = 25
-            TURQUOISE = 29
-            CYAN = 33
-            SKY = 37
-            OCEAN = 41
-            BLUE = 45
-            ORCHID = 49
-            MAGENTA = 53
-            PINK = 57
 
-            
-
-
-
-
-            pads1 = SpecialMatrix(4, 4, 95, 36, 6, 69).mirrorRightUpsideDown()     #Drumpads with mirrored pads
-            pads2 = SpecialMatrix(4, 2, 63, 36, 7, 24).pitchAscendingUpsideDown() # beat repeat above drums
-            pads3 = SpecialMatrix(4, 4, 99, 36, 8, 44).pitchAscendingUpsideDown()  #sampler
-            pads4 = SpecialMatrix(4, 4, 67, 36, 9, 22).pitchAscendingUpsideDown()  #Another one
+            SpecialMatrix((3, 1), (8, 4), 36, 6, Rgb.MAGENTA).mirror_right()          # drumpads, mirrored
+            SpecialMatrix((1, 1), (2, 4), 36, 7, RgbColor(24)).pitch_ascending_columns()       # beat repeat above drums
+            SpecialMatrix((1, 5), (4, 8), 36, 8, RgbColor(44)).pitch_ascending()       # sampler
+            SpecialMatrix((1, 5), (4, 8), 36, 9, RgbColor(22)).pitch_ascending()       # another one
             
 
 
