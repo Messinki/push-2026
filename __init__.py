@@ -1,8 +1,6 @@
 from __future__ import absolute_import, print_function, unicode_literals
-import Live
-from .PushEmpty import PushEmpty
+from .push2026 import Push2026
 
 def create_instance(c_instance):
-    u""" Creates and returns the PushEmpty script """
-    return PushEmpty(c_instance)
+    return Push2026(c_instance)
 
