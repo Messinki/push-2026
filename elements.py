@@ -30,10 +30,10 @@ class Elements(object):
         self.pan_send_button = ButtonElement(True, MIDI_CC_TYPE, 0, 115, name='Pan_Send_Button')
         self.quantize_button = ButtonElement(True, MIDI_CC_TYPE, 0, 116, name='Quantize_Button')
 
-        # -- Tempo encoders (channel 5) --
-        self.tempo_coarse = EncoderElement(MIDI_CC_TYPE, 5, 14, ENCODER_MAP_MODE,
+        # -- Tempo encoders (grabbed on ch0, native Push sends CC14/CC15) --
+        self.tempo_coarse = EncoderElement(MIDI_CC_TYPE, 0, 14, ENCODER_MAP_MODE,
             name='Tempo_Coarse')
-        self.tempo_fine = EncoderElement(MIDI_CC_TYPE, 5, 15, ENCODER_MAP_MODE,
+        self.tempo_fine = EncoderElement(MIDI_CC_TYPE, 0, 15, ENCODER_MAP_MODE,
             name='Tempo_Fine')
 
         # -- Function buttons (grabbed on ch0, re-channeled to ch2 for M4L) --
@@ -42,9 +42,15 @@ class Elements(object):
         self.sampler_function_buttons = _make_cc_buttons(
             'Sampler', [109, 108, 107, 106, 27, 26, 25, 24], channel=2)
 
+        # -- Tempo touch buttons (grabbed so they don't pass through) --
+        self.tempo_coarse_touch = ButtonElement(True, MIDI_NOTE_TYPE, 0, 10,
+            name='Tempo_Coarse_Touch')
+        self.tempo_fine_touch = ButtonElement(True, MIDI_NOTE_TYPE, 0, 9,
+            name='Tempo_Fine_Touch')
+
         # -- Dial touch buttons (grabbed on ch0, re-channeled to ch10 for M4L) --
         self.dial_touch_buttons = _make_note_buttons(
-            'Dial_Button', [7, 6, 5, 4, 3, 2, 1, 0, 8, 9, 10], channel=10)
+            'Dial_Button', [7, 6, 5, 4, 3, 2, 1, 0, 8], channel=10)
 
         # -- Dials (grabbed on ch0, re-channeled to ch2 for M4L) --
         self.dials = _make_encoders(

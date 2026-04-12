@@ -17,6 +17,7 @@ class Push2026(ControlSurface):
             self._elements = Elements()
             self._create_pad_components()
             self._create_transport()
+            self._create_tempo()
             self._create_background()
             self._create_modes()
 
@@ -39,6 +40,23 @@ class Push2026(ControlSurface):
         self._transport.set_play_button(self._elements.play_button)
         self._transport.set_metronome_button(self._elements.metronome_button)
         self._transport.set_tap_tempo_button(self._elements.tap_tempo_button)
+
+    def _create_tempo(self):
+        self._elements.tempo_coarse.add_value_listener(self._on_tempo_coarse_value)
+        self._elements.tempo_fine.add_value_listener(self._on_tempo_fine_value)
+
+    def _on_tempo_coarse_value(self, value):
+        delta = value if value < 64 else value - 128
+        self.song().tempo = max(20, min(999, self.song().tempo + delta))
+
+    def _on_tempo_fine_value(self, value):
+        delta = value if value < 64 else value - 128
+        self.song().tempo = max(20, min(999, self.song().tempo + delta * 0.1))
+
+    def disconnect(self):
+        self._elements.tempo_coarse.remove_value_listener(self._on_tempo_coarse_value)
+        self._elements.tempo_fine.remove_value_listener(self._on_tempo_fine_value)
+        ControlSurface.disconnect(self)
 
     def _create_background(self):
         self._background = BackgroundComponent(name='Background')
