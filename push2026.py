@@ -36,7 +36,7 @@ class Push2026(ControlSurface):
             'ascending', name='Sampler_2_Pads', is_enabled=False)
 
     def _create_transport(self):
-        self._transport = TransportComponent()
+        self._transport = TransportComponent(play_toggle_model_transform=lambda x: x)
         self._transport.set_play_button(self._elements.play_button)
         self._transport.set_metronome_button(self._elements.metronome_button)
         self._transport.set_tap_tempo_button(self._elements.tap_tempo_button)
