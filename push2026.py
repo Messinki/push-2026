@@ -42,8 +42,21 @@ class Push2026(ControlSurface):
         self._transport.set_tap_tempo_button(self._elements.tap_tempo_button)
 
     def _create_tempo(self):
+        self._tempo_touch_count = 0
         self._elements.tempo_coarse.add_value_listener(self._on_tempo_coarse_value)
         self._elements.tempo_fine.add_value_listener(self._on_tempo_fine_value)
+        self._elements.tempo_coarse_touch.add_value_listener(self._on_tempo_touch)
+        self._elements.tempo_fine_touch.add_value_listener(self._on_tempo_touch)
+
+    def _on_tempo_touch(self, value):
+        if value:
+            self._tempo_touch_count += 1
+            if self._tempo_touch_count == 1:
+                self.song().begin_undo_step()
+        else:
+            self._tempo_touch_count = max(0, self._tempo_touch_count - 1)
+            if self._tempo_touch_count == 0:
+                self.song().end_undo_step()
 
     def _on_tempo_coarse_value(self, value):
         delta = value if value < 64 else value - 128
@@ -56,6 +69,8 @@ class Push2026(ControlSurface):
     def disconnect(self):
         self._elements.tempo_coarse.remove_value_listener(self._on_tempo_coarse_value)
         self._elements.tempo_fine.remove_value_listener(self._on_tempo_fine_value)
+        self._elements.tempo_coarse_touch.remove_value_listener(self._on_tempo_touch)
+        self._elements.tempo_fine_touch.remove_value_listener(self._on_tempo_touch)
         ControlSurface.disconnect(self)
 
     def _create_background(self):
