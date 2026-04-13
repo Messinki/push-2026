@@ -7,9 +7,9 @@ from _Framework.Skin import Skin
 from pushbase.colors import PushColor
 
 ENCODER_MAP_MODE = Live.MidiMap.MapMode.relative_smooth_two_compliment
-PLAY_SKIN = Skin()
-PLAY_SKIN._colors[True] = PushColor(midi_value=4)
-PLAY_SKIN._colors[False] = PushColor(midi_value=1)
+TRANSPORT_SKIN = Skin()
+TRANSPORT_SKIN._colors[True] = PushColor(midi_value=4)
+TRANSPORT_SKIN._colors[False] = PushColor(midi_value=1)
 
 
 class Elements(object):
@@ -17,12 +17,12 @@ class Elements(object):
 
     def __init__(self):
         # -- Transport --
-        self.play_button = ButtonElement(True, MIDI_CC_TYPE, 0, 85, skin=PLAY_SKIN, name='Play_Button')
+        self.play_button = ButtonElement(True, MIDI_CC_TYPE, 0, 85, skin=TRANSPORT_SKIN, name='Play_Button')
+        self.stop_button = ButtonElement(True, MIDI_CC_TYPE, 0, 86, skin=TRANSPORT_SKIN, name='Stop_Button')
         self.metronome_button = ButtonElement(True, MIDI_CC_TYPE, 0, 9, name='Metronome_Button')
         self.tap_tempo_button = ButtonElement(True, MIDI_CC_TYPE, 0, 3, name='Tap_Tempo_Button')
 
         # -- Grabbed buttons (silent, available to M4L) --
-        self.record_button = ButtonElement(True, MIDI_CC_TYPE, 0, 86, name='Record_Button')
         self.new_button = ButtonElement(True, MIDI_CC_TYPE, 0, 87, name='New_Button')
         self.duplicate_button = ButtonElement(True, MIDI_CC_TYPE, 0, 88, name='Duplicate_Button')
         self.redo_button = ButtonElement(True, MIDI_CC_TYPE, 0, 89, name='Redo_Button')

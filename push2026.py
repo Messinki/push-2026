@@ -36,10 +36,26 @@ class Push2026(ControlSurface):
             'ascending', name='Sampler_2_Pads', is_enabled=False)
 
     def _create_transport(self):
-        self._transport = TransportComponent(play_toggle_model_transform=lambda x: x)
-        self._transport.set_play_button(self._elements.play_button)
+        self._transport = TransportComponent()
         self._transport.set_metronome_button(self._elements.metronome_button)
         self._transport.set_tap_tempo_button(self._elements.tap_tempo_button)
+        self._elements.play_button.add_value_listener(self._on_play_value)
+        self._elements.stop_button.add_value_listener(self._on_stop_value)
+        self.song().add_is_playing_listener(self._update_play_stop_leds)
+        self._update_play_stop_leds()
+
+    def _on_play_value(self, value):
+        if value:
+            self.song().is_playing = True
+
+    def _on_stop_value(self, value):
+        if value:
+            self.song().is_playing = False
+
+    def _update_play_stop_leds(self):
+        playing = self.song().is_playing
+        self._elements.play_button.set_light(playing)
+        self._elements.stop_button.set_light(not playing)
 
     def _create_tempo(self):
         self._tempo_touch_count = 0
@@ -67,6 +83,9 @@ class Push2026(ControlSurface):
         self.song().tempo = max(20, min(999, self.song().tempo + delta * 0.1))
 
     def disconnect(self):
+        self._elements.play_button.remove_value_listener(self._on_play_value)
+        self._elements.stop_button.remove_value_listener(self._on_stop_value)
+        self.song().remove_is_playing_listener(self._update_play_stop_leds)
         self._elements.tempo_coarse.remove_value_listener(self._on_tempo_coarse_value)
         self._elements.tempo_fine.remove_value_listener(self._on_tempo_fine_value)
         self._elements.tempo_coarse_touch.remove_value_listener(self._on_tempo_touch)
@@ -76,7 +95,6 @@ class Push2026(ControlSurface):
     def _create_background(self):
         self._background = BackgroundComponent(name='Background')
         self._background.layer = Layer(
-            record_button=self._elements.record_button,
             new_button=self._elements.new_button,
             duplicate_button=self._elements.duplicate_button,
             redo_button=self._elements.redo_button,
